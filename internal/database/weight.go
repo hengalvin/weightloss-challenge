@@ -22,8 +22,8 @@ type userWeights struct {
 }
 
 type userInfo struct {
-	Name              string  `json:"name`
-	InitialWeight     int     `json:"initial_weight`
+	Name              string  `json:"name"`
+	InitialWeight     int     `json:"initial_weight"`
 	CurrentWeightGr   int     `json:"current_weight_gr"`
 	WeightLost        int     `json:"weight_lost"`
 	WeightLostPercent float32 `json:"weight_lost_per"`
