@@ -8,9 +8,10 @@ import (
 	"weight-loss-challenge/internal/env"
 
 	_ "github.com/joho/godotenv/autoload"
-	_ "github.com/mattn/go-sqlite3"
+	_ "github.com/tursodatabase/libsql-client-go/libsql"
+	// _ "github.com/mattn/go-sqlite3" //local sqlite
 )
- 
+
 type application struct {
 	port      int
 	jwtSecret string
@@ -18,7 +19,16 @@ type application struct {
 }
 
 func main() {
-	db, err := sql.Open("sqlite3", "./data.db")
+	// // local sqlite
+	// db, err := sql.Open("sqlite3", "./data.db")
+
+	dsn := env.GetEnvString("TURSO_DATABASE_URL", "") + "?authToken=" + env.GetEnvString("TURSO_AUTH_TOKEN", "")
+
+	db, err := sql.Open("libsql", dsn)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}
