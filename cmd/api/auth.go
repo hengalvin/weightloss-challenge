@@ -2,6 +2,7 @@ package main
 
 import (
 	"net/http"
+	"strings"
 	"time"
 	"weight-loss-challenge/internal/database"
 
@@ -42,9 +43,9 @@ func (app *application) registerUser(c *gin.Context) {
 
 	register.Password = string(hashedPassword)
 	user := database.User{
-		Email:           register.Email,
+		Email:           strings.ToLower(register.Email),
 		Password:        register.Password,
-		Name:            register.Name,
+		Name:            strings.ToLower(register.Name),
 		InitialWeightGr: register.InitialWeight,
 		CurrentWeightGr: register.InitialWeight,
 	}
