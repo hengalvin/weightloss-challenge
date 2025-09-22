@@ -18,7 +18,7 @@ func (app *application) routes() http.Handler {
 	g.Use(cors.New(cors.Config{
 		AllowOrigins: []string{
 			"https://v0-weightloss-challenge-pi.vercel.app",
-			"http://localhost:3000", // dev
+			"https://preview-weight-loss-app-kzmg7t09z9jaxdhkrvqf.vusercontent.net", // dev
 		},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
