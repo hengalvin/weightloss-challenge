@@ -3,6 +3,7 @@ package database
 import (
 	"context"
 	"database/sql"
+	"strings"
 	"time"
 )
 
@@ -54,7 +55,7 @@ func (m *UserModel) Get(id int) (*User, error) {
 
 func (m *UserModel) GetByEmail(email string) (*User, error) {
 	query := `SELECT * FROM users WHERE email = ?1`
-	return m.getUser(query, email)
+	return m.getUser(query, strings.ToLower(email))
 }
 
 func (m *UserModel) UpdateUserWeights(user *User) error {
