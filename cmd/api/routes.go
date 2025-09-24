@@ -2,6 +2,8 @@ package main
 
 import (
 	"net/http"
+	"net/url"
+	"regexp"
 	"time"
 
 	"github.com/gin-contrib/cors"
@@ -16,14 +18,33 @@ func (app *application) routes() http.Handler {
 
 	// === CORS ===
 	g.Use(cors.New(cors.Config{
-		AllowOrigins: []string{
-			"https://v0-weightloss-challenge-pi.vercel.app",
-			"https://preview-weight-loss-app-kzmg7t09z9jaxdhkrvqf.vusercontent.net", // dev
+		AllowOriginFunc: func(origin string) bool {
+			// Parse the URL to avoid false positives
+			u, err := url.Parse(origin)
+			if err != nil {
+				return false
+			}
+
+			// Regex to match the preview URLs you described
+			matched, _ := regexp.MatchString(
+				`^preview-weight-loss-app-[a-zA-Z0-9]+\.vusercontent\.net$`,
+				u.Host,
+			)
+			if matched {
+				return true
+			}
+
+			// Explicitly allow production site too
+			if u.Host == "v0-weightloss-challenge-pi.vercel.app" {
+				return true
+			}
+
+			return false
 		},
 		AllowMethods:     []string{"GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"},
 		AllowHeaders:     []string{"Origin", "Content-Type", "Authorization"},
 		ExposeHeaders:    []string{"Content-Length"},
-		AllowCredentials: true, // set true ONLY if you send cookies or credentials
+		AllowCredentials: true,
 		MaxAge:           12 * time.Hour,
 	}))
 
